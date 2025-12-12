@@ -21,6 +21,7 @@ export const actions: Actions = {
     }
 
     try {
+      // Kolla om användare redan finns
       const existingUser = await prisma.user.findUnique({
         where: { username }
       });
@@ -29,10 +30,11 @@ export const actions: Actions = {
         return fail(400, { error: 'Användarnamn är upptaget' });
       }
 
+      // Skapa ny användare
       const newUser = await prisma.user.create({
         data: {
           username,
-          password // VIKTIGT: Säkrare i nästa modul!
+          password
         }
       });
 
@@ -43,10 +45,12 @@ export const actions: Actions = {
         httpOnly: true
       });
 
-      throw redirect(303, '/characters');
     } catch (error) {
+      console.error('Fel vid registrering:', error);
       return fail(500, { error: 'Kunde inte skapa användare' });
     }
+
+    throw redirect(303, '/characters');
   },
 
   login: async ({ request, cookies }) => {
@@ -67,26 +71,28 @@ export const actions: Actions = {
         return fail(400, { error: 'Fel användarnamn eller lösenord' });
       }
 
-      // VIKTIGT: Direkt jämförelse - osäkert!
       if (user.password !== password) {
         return fail(400, { error: 'Fel användarnamn eller lösenord' });
       }
 
       cookies.set('userId', user.id, {
         path: '/',
-        maxAge: 60 * 60 * 24 * 7,
+        maxAge: 60 * 60 * 24 * 7, // 1 vecka
         secure: false,
         httpOnly: true
       });
 
-      throw redirect(303, '/characters');
     } catch (error) {
+      console.error('Fel vid inloggning:', error);
       return fail(500, { error: 'Inloggning misslyckades' });
     }
+
+    throw redirect(303, '/characters');
   },
 
   logout: async ({ cookies }) => {
     cookies.delete('userId', { path: '/' });
+    
     throw redirect(303, '/');
   }
 };

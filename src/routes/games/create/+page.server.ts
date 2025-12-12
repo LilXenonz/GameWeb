@@ -28,7 +28,6 @@ export const actions: Actions = {
     }
 
     try {
-      // Kolla att karaktären tillhör användaren
       const character = await prisma.character.findFirst({
         where: { 
           id: characterId,
@@ -40,7 +39,6 @@ export const actions: Actions = {
         return fail(400, { message: 'Karaktären hittades inte' });
       }
 
-      // Skapa spelet
       await prisma.game.create({
         data: {
           won,
@@ -51,7 +49,6 @@ export const actions: Actions = {
         }
       });
 
-      // Uppdatera statistik
       await prisma.character.update({
         where: { id: characterId },
         data: {

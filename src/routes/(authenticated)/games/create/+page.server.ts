@@ -1,42 +1,42 @@
-import type { PageServerLoad, Actions } from './$types';
-import { requireAuth } from '$lib/auth.js';
-import prisma from '$lib/prisma.js';
-import { fail } from '@sveltejs/kit';
+import type { PageServerLoad, Actions } from './$types'
+import { requireAuth } from '$lib/auth.js'
+import prisma from '$lib/prisma.js'
+import { fail } from '@sveltejs/kit'
 
 export const load: PageServerLoad = async ({ cookies }) => {
-  const user = await requireAuth(cookies);
-  
+  const user = await requireAuth(cookies)
+
   const characters = await prisma.character.findMany({
     where: { userId: user.id },
     orderBy: { name: 'asc' }
-  });
+  })
 
-  return { characters };
-};
+  return { characters }
+}
 
 export const actions: Actions = {
   default: async ({ request, cookies }) => {
-    const user = await requireAuth(cookies);
-    const data = await request.formData();
-    const characterId = data.get('characterId')?.toString();
-    const won = data.get('won') === 'true';
-    const opponent = data.get('opponent')?.toString();
-    const note = data.get('note')?.toString();
+    const user = await requireAuth(cookies)
+    const data = await request.formData()
+    const characterId = data.get('characterId')?.toString()
+    const won = data.get('won') === 'true'
+    const opponent = data.get('opponent')?.toString()
+    const note = data.get('note')?.toString()
 
     if (!characterId) {
-      return fail(400, { message: 'Välj en karaktär' });
+      return fail(400, { message: 'Välj en karaktär' })
     }
 
     try {
       const character = await prisma.character.findFirst({
-        where: { 
+        where: {
           id: characterId,
-          userId: user.id 
+          userId: user.id
         }
-      });
+      })
 
       if (!character) {
-        return fail(400, { message: 'Karaktären hittades inte' });
+        return fail(400, { message: 'Karaktären hittades inte' })
       }
 
       await prisma.game.create({
@@ -47,7 +47,7 @@ export const actions: Actions = {
           characterId,
           userId: user.id
         }
-      });
+      })
 
       await prisma.character.update({
         where: { id: characterId },
@@ -56,11 +56,11 @@ export const actions: Actions = {
           wins: won ? { increment: 1 } : undefined,
           losses: !won ? { increment: 1 } : undefined
         }
-      });
+      })
 
-      return { success: true };
+      return { success: true }
     } catch (error) {
-      return fail(500, { message: 'Kunde inte logga match' });
+      return fail(500, { message: 'Kunde inte logga match' })
     }
   }
-};
+}

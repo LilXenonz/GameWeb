@@ -2,5 +2,8 @@ import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-	plugins: [sveltekit()]
+  plugins: [sveltekit()],
+  define: {
+    'global': 'globalThis'  // För Node.js global objekt i browser
+  }
 });

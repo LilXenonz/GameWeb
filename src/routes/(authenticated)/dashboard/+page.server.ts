@@ -13,8 +13,14 @@ export const load: PageServerLoad = async ({ cookies }) => {
     _sum: { totalGames: true, wins: true, losses: true }
   })
 
+  let profileImageData = null
+  if (user.profileImageId) {
+    const img = await prisma.image.findUnique({ where: { id: user.profileImageId } })
+    if (img) profileImageData = img.data
+  }
+
   return {
-    user,
+    user: { ...user, profileImageData },
     stats: {
       characterCount: stats._count.id,
       totalGames: stats._sum.totalGames || 0,
@@ -86,9 +92,19 @@ export const actions: Actions = {
       const buffer = await imageFile.arrayBuffer()
       const base64 = Buffer.from(buffer).toString('base64')
 
+      const newImage = await prisma.image.create({
+        data: {
+          name: imageFile.name,
+          type: imageFile.type,
+          data: base64,
+          size: imageFile.size,
+          userId: user.id
+        }
+      })
+
       await prisma.user.update({
         where: { id: user.id },
-        data: { profileImage: base64 }
+        data: { profileImageId: newImage.id }
       })
 
       return { success: true, message: 'Bild uppladdad' }
@@ -101,10 +117,14 @@ export const actions: Actions = {
     const user = await requireAuth(cookies)
 
     try {
+      const currentUser = await prisma.user.findUnique({ where: { id: user.id } })
       await prisma.user.update({
         where: { id: user.id },
-        data: { profileImage: null }
+        data: { profileImageId: null }
       })
+      if (currentUser?.profileImageId) {
+        await prisma.image.delete({ where: { id: currentUser.profileImageId } })
+      }
 
       return { success: true, message: 'Bild borttagen' }
     } catch (error) {

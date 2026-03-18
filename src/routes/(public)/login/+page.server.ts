@@ -1,7 +1,8 @@
 import { fail, redirect } from '@sveltejs/kit'
-import type { Actions } from '@sveltejs/kit'
+import type { Actions, PageServerLoad } from './$types'
 import prisma from '$lib/prisma.js'
 import * as crypto from 'node:crypto'
+import { createSession, invalidateSession, getUser } from '$lib/auth'
 
 // SÄKER LÖSENORDSHASHNING MED SALT
 function hashPassword(password: string): { salt: string; hash: string } {
@@ -49,8 +50,20 @@ function validatePasswordStrength(password: string): string[] {
   return errors
 }
 
+// CHECK IF USER IS ALREADY LOGGED IN
+export const load: PageServerLoad = async ({ cookies }) => {
+  const user = await getUser(cookies);
+
+  // If user is already logged in, redirect to dashboard
+  if (user) {
+    throw redirect(302, '/dashboard');
+  }
+
+  return {};
+};
+
 export const actions: Actions = {
-  register: async ({ request, cookies }) => {
+  register: async ({ request, cookies, getClientAddress }) => {
     const data = await request.formData()
     const username = data.get('username')?.toString()
     const password = data.get('password')?.toString()
@@ -89,11 +102,29 @@ export const actions: Actions = {
         }
       })
 
-      cookies.set('userId', newUser.id, {
+      // Skapa session
+      const session = await createSession(
+        newUser.id,
+        request.headers.get('user-agent') || 'Unknown',
+        getClientAddress()
+      );
+
+      // Set cookie with explicit expiration date
+      const expiresDate = new Date();
+      expiresDate.setDate(expiresDate.getDate() + 14);
+
+      console.log('🍪 Setting session cookie for registration:');
+      console.log('  Token:', session.token.substring(0, 10) + '...');
+      console.log('  Expires:', expiresDate.toISOString());
+      console.log('  MaxAge:', 60 * 60 * 24 * 14, 'seconds');
+
+      cookies.set('sessionToken', session.token, {
         path: '/',
-        maxAge: 60 * 60 * 24 * 7,
-        secure: false,
-        httpOnly: true
+        maxAge: 60 * 60 * 24 * 14, // 14 dagar
+        expires: expiresDate,
+        secure: false, // true i production
+        httpOnly: true,
+        sameSite: 'lax'
       })
 
     } catch (error) {
@@ -104,10 +135,11 @@ export const actions: Actions = {
     throw redirect(303, '/dashboard')
   },
 
-  login: async ({ request, cookies }) => {
+  login: async ({ request, cookies, getClientAddress }) => {
     const data = await request.formData()
     const username = data.get('username')?.toString()
     const password = data.get('password')?.toString()
+    const rememberMe = data.get('rememberMe') === 'on';
 
     if (!username || !password) {
       return fail(400, { error: 'Alla fält måste fyllas i' })
@@ -151,11 +183,32 @@ export const actions: Actions = {
         return fail(400, { error: 'Ogiltigt användarnamn eller lösenord' })
       }
 
-      cookies.set('userId', user.id, {
+      // Create session
+      const sessionDays = rememberMe ? 90 : 14;
+      const session = await createSession(
+        user.id,
+        request.headers.get('user-agent') || 'Unknown',
+        getClientAddress(),
+        sessionDays
+      );
+
+      // Set cookie with explicit expiration date
+      const expiresDate = new Date();
+      expiresDate.setDate(expiresDate.getDate() + sessionDays);
+
+      console.log('🍪 Setting session cookie for login:');
+      console.log('  Token:', session.token.substring(0, 10) + '...');
+      console.log('  Expires:', expiresDate.toISOString());
+      console.log('  MaxAge:', 60 * 60 * 24 * sessionDays, 'seconds');
+      console.log('  Remember Me:', rememberMe, '(', sessionDays, 'days)');
+
+      cookies.set('sessionToken', session.token, {
         path: '/',
-        maxAge: 60 * 60 * 24 * 7,
-        secure: false,
-        httpOnly: true
+        maxAge: 60 * 60 * 24 * sessionDays,
+        expires: expiresDate,
+        secure: false, // true i production check process.env.NODE_ENV
+        httpOnly: true,
+        sameSite: 'lax'
       })
 
     } catch (error) {
@@ -167,7 +220,12 @@ export const actions: Actions = {
   },
 
   logout: async ({ cookies }) => {
-    cookies.delete('userId', { path: '/' })
+    const token = cookies.get('sessionToken');
+    if (token) {
+      await invalidateSession(token);
+    }
+    cookies.delete('sessionToken', { path: '/' });
+    cookies.delete('userId', { path: '/' }); // Cleanup old cookie if exists
     throw redirect(303, '/')
   }
 }

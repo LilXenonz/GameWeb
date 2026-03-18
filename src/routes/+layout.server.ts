@@ -3,12 +3,12 @@ import type { LayoutServerLoad } from './$types'
 import { getUser } from '$lib/auth.js'
 
 export const load: LayoutServerLoad = async ({ cookies, url }) => {
-  // HÄMTA ANVÄNDARDATA FÖR ATT SE OM NÅGON ÄR INLOGGAD
+  // Check if user is logged in
   const user = await getUser(cookies)
-  
+
   return {
     theme: cookies.get('theme') || 'dark',
     currentPath: url.pathname,
-    user // USER ÄR NULL OM INGEN ÄR INLOGGAD
+    user // null if not logged in
   }
 }

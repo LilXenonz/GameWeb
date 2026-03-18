@@ -1,0 +1,158 @@
+﻿Loading svelte-check in workspace: c:\teknik\Web 3\Spelkarakt├ñrer\character-tracker
+Getting Svelte diagnostics...
+
+c:\teknik\Web 3\Spelkarakt├ñrer\character-tracker\[32msrc\routes\(authenticated)\dashboard\+page.server.ts[39m:91:17
+[31mError[39m: Type 'string' has no properties in common with type 'ImageUpdateOneWithoutUserProfileNestedInput'. 
+[36m        where: { id: user.id },
+        data: { [35mprofileImage[36m: base64 }
+      })[39m
+
+c:\teknik\Web 3\Spelkarakt├ñrer\character-tracker\[32msrc\routes\(authenticated)\dashboard\+page.server.ts[39m:106:17
+[31mError[39m: Type 'null' is not assignable to type 'ImageUpdateOneWithoutUserProfileNestedInput | undefined'. 
+[36m        where: { id: user.id },
+        data: { [35mprofileImage[36m: null }
+      })[39m
+
+c:\teknik\Web 3\Spelkarakt├ñrer\character-tracker\[32msrc\routes\+layout.svelte[39m:2:14
+[33mWarn[39m: Component has unused export property 'data'. If it is for external reference only, please consider using `export const data`
+https://svelte.dev/e/export_let_unused (svelte)
+[36m<script>
+  export let [35mdata[36m;
+</script>[39m
+
+c:\teknik\Web 3\Spelkarakt├ñrer\character-tracker\[32msrc\routes\(authenticated)\characters\[id]\+page.svelte[39m:40:11
+[33mWarn[39m: A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control (svelte)
+[36m        <div>
+          [35m<label>Result</label>[36m
+          <select name="won">[39m
+
+c:\teknik\Web 3\Spelkarakt├ñrer\character-tracker\[32msrc\routes\(authenticated)\characters\[id]\+page.svelte[39m:47:11
+[33mWarn[39m: A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control (svelte)
+[36m        <div>
+          [35m<label>Opponent (optional)</label>[36m
+          <input type="text" name="opponent" />[39m
+
+c:\teknik\Web 3\Spelkarakt├ñrer\character-tracker\[32msrc\routes\(authenticated)\characters\[id]\+page.svelte[39m:52:9
+[33mWarn[39m: A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control (svelte)
+[36m      <div class="form-group">
+        [35m<label>Notes (optional)</label>[36m
+        <textarea name="note" rows="2"></textarea>[39m
+
+c:\teknik\Web 3\Spelkarakt├ñrer\character-tracker\[32msrc\routes\(authenticated)\characters\[id]\+page.svelte[39m:12:23
+[31mError[39m: Property 'image' does not exist on type '{ id: string; createdAt: Date; userId: string; name: string; description: string | null; imageId: string | null; totalGames: number; wins: number; losses: number; }'. Did you mean 'imageId'? (ts)
+[36m  
+  {#if data.character.[35mimage[36m}
+    <img src={data.character.image} alt={data.character.name} />[39m
+
+c:\teknik\Web 3\Spelkarakt├ñrer\character-tracker\[32msrc\routes\(authenticated)\characters\[id]\+page.svelte[39m:13:30
+[31mError[39m: Property 'image' does not exist on type '{ id: string; createdAt: Date; userId: string; name: string; description: string | null; imageId: string | null; totalGames: number; wins: number; losses: number; }'. Did you mean 'imageId'? (ts)
+[36m  {#if data.character.image}
+    <img src={data.character.[35mimage[36m} alt={data.character.name} />
+  {/if}[39m
+
+c:\teknik\Web 3\Spelkarakt├ñrer\character-tracker\[32msrc\routes\(authenticated)\characters\create\+page.svelte[39m:15:7
+[33mWarn[39m: A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control (svelte)
+[36m    <div class="pixel-form-group">
+      [35m<label>NAME *</label>[36m
+      <input type="text" name="name" required class="pixel-input" />[39m
+
+c:\teknik\Web 3\Spelkarakt├ñrer\character-tracker\[32msrc\routes\(authenticated)\characters\create\+page.svelte[39m:20:7
+[33mWarn[39m: A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control (svelte)
+[36m    <div class="pixel-form-group">
+      [35m<label>DESCRIPTION</label>[36m
+      <textarea name="description" rows="3" class="pixel-textarea"></textarea>[39m
+
+c:\teknik\Web 3\Spelkarakt├ñrer\character-tracker\[32msrc\routes\(authenticated)\dashboard\+page.svelte[39m:36:28
+[31mError[39m: Property 'profileImage' does not exist on type '{ id: string; createdAt: Date; username: string; password: string | null; salt: string | null; hash: string | null; email: string | null; profileImageId: string | null; }'. Did you mean 'profileImageId'? (ts)
+[36m        <img src={previewUrl} alt="Preview" class="profile-image" />
+      {:else if data.user?.[35mprofileImage[36m}
+        <img src={'data:image/jpeg;base64,' + data.user.profileImage} alt="Profile" class="profile-image" />[39m
+
+c:\teknik\Web 3\Spelkarakt├ñrer\character-tracker\[32msrc\routes\(authenticated)\dashboard\+page.svelte[39m:37:57
+[31mError[39m: Property 'profileImage' does not exist on type '{ id: string; createdAt: Date; username: string; password: string | null; salt: string | null; hash: string | null; email: string | null; profileImageId: string | null; }'. Did you mean 'profileImageId'? (ts)
+[36m      {:else if data.user?.profileImage}
+        <img src={'data:image/jpeg;base64,' + data.user.[35mprofileImage[36m} alt="Profile" class="profile-image" />
+      {:else}[39m
+
+c:\teknik\Web 3\Spelkarakt├ñrer\character-tracker\[32msrc\routes\(authenticated)\dashboard\+page.svelte[39m:46:98
+[31mError[39m: Property 'click' does not exist on type 'Element'. (ts)
+[36m            <input type="file" name="image" accept="image/*" on:change={handleFileSelect} hidden />
+            <button type="button" on:click={() => document.querySelector('input[name="image"]')?.[35mclick[36m()}>
+              Ladda upp bild[39m
+
+c:\teknik\Web 3\Spelkarakt├ñrer\character-tracker\[32msrc\routes\(authenticated)\dashboard\+page.svelte[39m:51:27
+[31mError[39m: Property 'profileImage' does not exist on type '{ id: string; createdAt: Date; username: string; password: string | null; salt: string | null; hash: string | null; email: string | null; profileImageId: string | null; }'. Did you mean 'profileImageId'? (ts)
+[36m          
+          {#if data.user?.[35mprofileImage[36m}
+            <form action="?/removeImage" method="POST" style="display: inline;">[39m
+
+c:\teknik\Web 3\Spelkarakt├ñrer\character-tracker\[32msrc\routes\(authenticated)\games\create\+page.svelte[39m:25:7
+[33mWarn[39m: A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control (svelte)
+[36m    <div class="pixel-form-group">
+      [35m<label class="pixel-label">
+        CHARACTER *
+      </label>[36m
+      <select name="characterId" required bind:value={selectedCharacter} class="pixel-select">[39m
+
+c:\teknik\Web 3\Spelkarakt├ñrer\character-tracker\[32msrc\routes\(authenticated)\games\create\+page.svelte[39m:37:7
+[33mWarn[39m: A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control (svelte)
+[36m    <div class="pixel-form-group">
+      [35m<label class="pixel-label">RESULT *</label>[36m
+      <div class="pixel-radio-group">[39m
+
+c:\teknik\Web 3\Spelkarakt├ñrer\character-tracker\[32msrc\routes\(authenticated)\games\create\+page.svelte[39m:51:7
+[33mWarn[39m: A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control (svelte)
+[36m    <div class="pixel-form-group">
+      [35m<label class="pixel-label">
+        OPPONENT
+      </label>[36m
+      <input type="text" name="opponent" class="pixel-input" />[39m
+
+c:\teknik\Web 3\Spelkarakt├ñrer\character-tracker\[32msrc\routes\(authenticated)\games\create\+page.svelte[39m:58:7
+[33mWarn[39m: A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control (svelte)
+[36m    <div class="pixel-form-group">
+      [35m<label class="pixel-label">
+        NOTE
+      </label>[36m
+      <textarea name="note" class="pixel-textarea"></textarea>[39m
+
+c:\teknik\Web 3\Spelkarakt├ñrer\character-tracker\[32msrc\routes\(public)\login\+page.svelte[39m:27:11
+[33mWarn[39m: A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control (svelte)
+[36m        <div class="form-group">
+          [35m<label>Username</label>[36m
+          <input type="text" name="username" required />[39m
+
+c:\teknik\Web 3\Spelkarakt├ñrer\character-tracker\[32msrc\routes\(public)\login\+page.svelte[39m:31:11
+[33mWarn[39m: A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control (svelte)
+[36m        <div class="form-group">
+          [35m<label>Password</label>[36m
+          <input type="password" name="password" required />[39m
+
+c:\teknik\Web 3\Spelkarakt├ñrer\character-tracker\[32msrc\routes\(public)\login\+page.svelte[39m:43:11
+[33mWarn[39m: A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control (svelte)
+[36m        <div class="form-group">
+          [35m<label>Username (min 3 characters)</label>[36m
+          <input type="text" name="username" required />[39m
+
+c:\teknik\Web 3\Spelkarakt├ñrer\character-tracker\[32msrc\routes\(public)\login\+page.svelte[39m:47:11
+[33mWarn[39m: A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control (svelte)
+[36m        <div class="form-group">
+          [35m<label>Password (min 3 characters)</label>[36m
+          <input type="password" name="password" required />[39m
+
+====================================
+[31msvelte-check found 8 errors and 14 warnings in 7 files
+[39m

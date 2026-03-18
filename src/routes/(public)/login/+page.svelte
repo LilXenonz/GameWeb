@@ -1,22 +1,22 @@
 <script lang="ts">
-  import type { ActionData } from './$types.js'
-  export let form: ActionData
-  let isLogin = true
+  import type { ActionData } from "./$types.js";
+  export let form: ActionData;
+  let isLogin = true;
 </script>
 
 <div class="auth">
   <div class="auth-container">
-    <h2>{isLogin ? 'Login' : 'Register'}</h2>
+    <h2>{isLogin ? "Login" : "Register"}</h2>
 
     {#if form?.error}
       <div class="error">{form.error}</div>
     {/if}
 
     <div class="toggle">
-      <button on:click={() => isLogin = true} class:active={isLogin}>
+      <button on:click={() => (isLogin = true)} class:active={isLogin}>
         Login
       </button>
-      <button on:click={() => isLogin = false} class:active={!isLogin}>
+      <button on:click={() => (isLogin = false)} class:active={!isLogin}>
         Register
       </button>
     </div>
@@ -30,6 +30,10 @@
         <div class="form-group">
           <label>Password</label>
           <input type="password" name="password" required />
+        </div>
+        <div class="form-group checkbox">
+          <input type="checkbox" id="rememberMe" name="rememberMe" />
+          <label for="rememberMe">Remember me</label>
         </div>
         <button type="submit">Login</button>
       </form>
@@ -103,7 +107,7 @@
     color: #ffffff;
     border-right: 3px solid #ffffff;
   }
-  
+
   .toggle button:last-child {
     border-right: none;
   }
@@ -112,7 +116,7 @@
     background: #ffffff;
     color: #000000;
   }
-  
+
   .toggle button:not(.active):hover {
     background: #222222;
   }

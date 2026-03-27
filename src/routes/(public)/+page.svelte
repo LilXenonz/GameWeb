@@ -1,8 +1,8 @@
 <div class="hero-section">
-  <h1 class="hero-title">PIXEL GAME TRACKER</h1>
+  <h1 class="hero-title">PIXEL GAME</h1>
   <p class="hero-subtitle">LEVEL UP </p>
   <div class="hero-buttons">
-    <a href="/login" class="hero-button login-btn">▶ LOGIN</a>
+    <a href="/login" class="hero-button login-btn">LOGIN</a>
   </div>
   <div class="pixel-art">hej </div>
 </div>

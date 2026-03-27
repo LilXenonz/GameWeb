@@ -7,7 +7,7 @@
     <div class="header-content">
       <h1 class="logo">
         <span class="logo-icon">🎮</span>
-        <span class="logo-text">Pixel Game Tracker</span>
+        <span class="logo-text">Pixel Game</span>
       </h1>
       
       <nav class="public-nav">
@@ -31,8 +31,7 @@
 
   <footer class="public-footer">
     <div class="footer-content">
-      <p class="copyright">© 2024 Pixel Game Tracker. All rights reserved.</p>
-      <p class="tagline">Level up your gaming experience! 🚀</p>
+      <p class="cctext">Pixel Game ..</p>
     </div>
   </footer>
 </div>
@@ -147,18 +146,14 @@
     text-align: center;
   }
 
-  .copyright {
+  .cctext {
     color: #cccccc;
     font-size: 0.9rem;
     margin-bottom: 0.5rem;
     text-shadow: none;
   }
 
-  .tagline {
-    color: #ffffff;
-    font-size: 1rem;
-    text-shadow: none;
-  }
+ 
 
   @media (max-width: 768px) {
     .header-content {
